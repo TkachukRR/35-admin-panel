@@ -1,0 +1,28 @@
+.container{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 140px 46px 20px;
+}
+
+.wrapper{
+  position: relative;
+  display: grid;
+  grid-template-columns: 67.6fr 32.4fr;
+  grid-gap: 26px;
+}
+
+.users{
+  position: relative;
+}
+
+.users__button {
+  position: absolute;
+  right: 0;
+  top: -16px;
+  transform: translateY(-100%);
+  background-color: var(--bg-btn-primary);
+  box-shadow: var(--shadow-btn-primary);
+}
