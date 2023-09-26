@@ -14,4 +14,10 @@ export class UsersService {
   private _users$ = this._http.get<User[]>(this.localFile);
 
   public users = toSignal(this._users$, {initialValue : [] as User[]})
+
+  public selectedUserName = signal('')
+
+  public setSelectedUserName(userName: string): void{
+    this.selectedUserName.set(userName)
+  }
 }
