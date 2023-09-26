@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import "styles/normalized";
+@import "styles/container";
+@import "styles/hidden";
+@import "styles/scrollbar";
+@import "styles/variables/colors";
+@import "styles/variables/font";
+@import "styles/variables/transition";
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-page);
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: var(--txt-primary);
+  font-size: var(--size-S);
+  font-weight: var(--weight-M);
+  line-height: var(--height-S);
+  letter-spacing: 0px;
+}
