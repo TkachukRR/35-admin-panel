@@ -6,7 +6,7 @@
     </tr>
   </thead>
   <tbody class="table__body scrollbar">
-    <tr *ngFor="let user of users" class="table__row table__row--body">
+    <tr *ngFor="let user of users()" class="table__row table__row--body" (click)="onSelected(user.username)">
       <td class="table__item--body">{{ user.username }}</td>
       <td class="table__item--body">{{ user.first_name | titlecase }}</td>
       <td class="table__item--body">{{ user.last_name | titlecase }}</td>

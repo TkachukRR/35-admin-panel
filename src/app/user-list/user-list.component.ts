@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { User } from "../interfaces/user";
+import { UsersService } from "../services/users.service";
 
 @Component({
   selector: 'app-user-list',
@@ -6,119 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent {
+  private _userService = inject(UsersService);
+
   public tableHeaders: string[] = ['Username','First name','Last name','Email','Type'];
-  public users = [
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    },
-    {
-      username:'mperry1992',
-      first_name:'Matthew',
-      last_name:'Perry',
-      email:'matthew@mail.com',
-      user_type:'Administrator'
-    }
-    ]
+  public users = this._userService.users
+  public selectedUser = this._userService.selectedUserName;
+
+  onSelected(userName: string):void {
+    this._userService.setSelectedUserName(userName);
+  }
 }
