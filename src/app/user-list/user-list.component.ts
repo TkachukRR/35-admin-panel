@@ -1,5 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
-import { User } from "../interfaces/user";
+import { Component, inject } from '@angular/core';
 import { UsersService } from "../services/users.service";
 
 @Component({
