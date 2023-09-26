@@ -37,6 +37,10 @@
         margin-bottom: 2px;
       }
     }
+
+    &--selected{
+      background-color: var(--bg-users-item-hover);
+    }
   }
 
   &__item{
