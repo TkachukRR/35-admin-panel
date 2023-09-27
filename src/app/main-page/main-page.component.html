@@ -1,8 +1,11 @@
 <div class="container">
   <div class="wrapper">
     <div class="users">
-      <button type="button" class="users__button btn">Create User</button>
+      <button type="button" class="users__button btn" (click)="onCreateUser()">Create User</button>
       <app-user-list></app-user-list>
+    </div>
+    <div class="user-form" *ngIf="formVisible()">
     </div>
   </div>
 </div>
+
