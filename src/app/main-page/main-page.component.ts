@@ -20,4 +20,10 @@ export class MainPageComponent {
     this.editUserFormVisible.set(false)
     this.createUserFormVisible.set(true)
   }
+
+  public onClose(){
+    this.selectedUser.set('')
+    this.editUserFormVisible.set(false)
+    this.createUserFormVisible.set(false)
+  }
 }

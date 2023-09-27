@@ -31,4 +31,13 @@
   height: 100%;
   background-color: var(--bg-component);
   border-radius: 6px;
+  position: relative;
+
+  &__btn--close{
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: none;
+    border: none;
+  }
 }
