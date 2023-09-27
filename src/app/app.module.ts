@@ -6,12 +6,14 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { EditCreateFormComponent } from './edit-create-form/edit-create-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
-    MainPageComponent
+    MainPageComponent,
+    EditCreateFormComponent
   ],
   imports: [
     BrowserModule,
