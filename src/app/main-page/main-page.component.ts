@@ -8,10 +8,10 @@ import { UsersService } from "../services/users.service";
 })
 export class MainPageComponent {
   private _userService = inject(UsersService);
-  private selectedUser = this._userService.selectedUserName;
+  public selectedUser = this._userService.selectedUserName;
 
   private editUserFormVisible = signal(!!this.selectedUser())
-  private createUserFormVisible = signal(false)
+  private createUserFormVisible = signal(true) //TODO false
 
   public formVisible = computed( () => this.editUserFormVisible() || this.selectedUser() || this.createUserFormVisible() )
 
