@@ -1,6 +1,7 @@
 import { Component, inject, Input, OnChanges, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FormState } from "../enums/form-state";
+import { FormUserTypes } from "../enums/form-user-types";
 
 @Component({
   selector: 'app-edit-create-form',
@@ -12,6 +13,7 @@ export class EditCreateFormComponent implements OnInit, OnChanges{
 
   @Input() userName = '';
 
+  public userTypes: FormUserTypes[] = [ FormUserTypes.admin, FormUserTypes.driver]
   public userForm!: FormGroup;
   public formState = signal<FormState>(FormState.create);
 
@@ -37,5 +39,8 @@ export class EditCreateFormComponent implements OnInit, OnChanges{
         this.formState.set(FormState.create);
         break;
     }
+  }
+
+  public onSubmit(){
   }
 }
