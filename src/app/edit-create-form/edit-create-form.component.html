@@ -6,9 +6,9 @@
       <label class="field__label" for="username">Username</label>
       <input class="field__input" type="text" id="username" formControlName="username" required [ngClass]="{'field__input--error': userForm.controls['username'].touched && userForm.controls['username'].errors }">
       <div class="field__error" *ngIf=" userForm.controls['username'].touched && userForm.controls['username'].errors">Error:
-        <span *ngIf="userForm.controls['username'].errors?.['required']">required </span>
-        <span *ngIf="userForm.controls['username'].errors?.['pattern']">only {{ userForm.controls['username'].errors?.['pattern']['requiredPattern'].slice(3, -4) }} </span>
-        <span *ngIf="userForm.controls['username'].errors?.['minlength']">minlength {{ userForm.controls['username'].errors?.['minlength']['requiredLength'] }} </span>
+        <span *ngIf="userForm.get('username')?.getError('required')">required </span>
+        <span *ngIf="userForm.get('username')?.getError('pattern')">minlength {{ userForm.get('username')?.getError('pattern')?.['requiredPattern'].slice(3, -4) }} </span>
+        <span *ngIf="userForm.get('username')?.getError('minlength')">minlength {{ userForm.get('username')?.getError('minlength')?.['requiredLength'] }} </span>
       </div>
     </div>
 
@@ -16,8 +16,8 @@
       <label class="field__label" for="firstName">First Name</label>
       <input class="field__input" type="text" id="firstName" formControlName="firstName" required [ngClass]="{'field__input--error': userForm.controls['firstName'].touched && userForm.controls['firstName'].errors }">
       <div class="field__error" *ngIf=" userForm.controls['firstName'].touched && userForm.controls['firstName'].errors">Error:
-        <span *ngIf="userForm.controls['firstName'].errors?.['required']">required </span>
-        <span *ngIf="userForm.controls['firstName'].errors?.['pattern']">only {{ userForm.controls['firstName'].errors?.['pattern']['requiredPattern'].slice(3, -4) }} </span>
+        <span *ngIf="userForm.get('firstName')?.getError('required')">required </span>
+        <span *ngIf="userForm.get('firstName')?.getError('pattern')">only {{ userForm.get('firstName')?.getError('pattern')?.['requiredPattern'].slice(3, -4) }} </span>
       </div>
     </div>
 
@@ -25,8 +25,8 @@
       <label class="field__label" for="lastName">Last Name</label>
       <input class="field__input" type="text" id="lastName" formControlName="lastName" required [ngClass]="{'field__input--error': userForm.controls['lastName'].touched && userForm.controls['lastName'].errors }">
       <div class="field__error" *ngIf=" userForm.controls['lastName'].touched && userForm.controls['lastName'].errors">Error:
-        <span *ngIf="userForm.controls['lastName'].errors?.['required']">required </span>
-        <span *ngIf="userForm.controls['lastName'].errors?.['pattern']">only {{ userForm.controls['lastName'].errors?.['pattern']['requiredPattern'].slice(3, -4) }} </span>
+        <span *ngIf="userForm.get('lastName')?.getError('required')">required </span>
+        <span *ngIf="userForm.get('lastName')?.getError('pattern')">only {{ userForm.get('lastName')?.getError('pattern')?.['requiredPattern'].slice(3, -4) }} </span>
       </div>
     </div>
 
@@ -34,8 +34,8 @@
       <label class="field__label" for="email">Email</label>
       <input class="field__input" type="text" id="email" formControlName="email" required [ngClass]="{'field__input--error': userForm.controls['email'].touched && userForm.controls['email'].errors }">
       <div class="field__error" *ngIf=" userForm.controls['email'].touched && userForm.controls['email'].errors">Error:
-        <span *ngIf="userForm.controls['email'].errors?.['required']">required </span>
-        <span *ngIf="userForm.controls['email'].errors?.['email']">isn't e-mail</span>
+        <span *ngIf="userForm.get('email')?.getError('required')">required </span>
+        <span *ngIf="userForm.get('email')?.getError('email')">isn't e-mail </span>
       </div>
     </div>
 
@@ -45,7 +45,7 @@
         <option *ngFor="let type of userTypes" [value]="type" class="field__option">{{ type }}</option>
       </select>
       <div class="field__error" *ngIf=" userForm.controls['type'].touched && userForm.controls['type'].errors">Error:
-        <span *ngIf="userForm.controls['type'].errors?.['required']">required </span>
+        <span *ngIf="userForm.get('type')?.getError('required')">required </span>
       </div>
     </div>
 
@@ -53,11 +53,11 @@
       <label class="field__label" for="password">Password</label>
       <input class="field__input" type="text" id="password" formControlName="password" required [ngClass]="{'field__input--error': userForm.controls['password'].touched && userForm.controls['password'].errors }">
       <div class="field__error" *ngIf=" userForm.controls['password'].touched && userForm.controls['password'].errors">Error:
-        <span *ngIf="userForm.controls['password'].errors?.['required']">required </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*[A-Z])')">one uppercase letter </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*[a-z])')">one lower letter </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*\\d)')">one number </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*[@#$!%*?&])')">one symbol @#$!%*?& </span>
+        <span *ngIf="userForm.get('password')?.getError('required')">required </span>
+        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*[A-Z])')">one uppercase letter </span>
+        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*[a-z])')">one lower letter </span>
+        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*\\d)')">one number </span>
+        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*[@#$!%*?&])')">one symbol @#$!%*?& </span>
       </div>
     </div>
 
@@ -65,7 +65,7 @@
       <label class="field__label" for="repeatPassword">Repeat password</label>
       <input class="field__input" type="text" id="repeatPassword" formControlName="repeatPassword" required [ngClass]="{'field__input--error': userForm.controls['repeatPassword'].touched && (userForm.controls['repeatPassword'].errors || userForm.controls['repeatPassword'].value !== userForm.controls['password'].value) }">
       <div class="field__error" *ngIf=" userForm.controls['repeatPassword'].touched && (userForm.controls['repeatPassword'].errors || userForm.controls['repeatPassword'].value !== userForm.controls['password'].value)">Error:
-        <span *ngIf="userForm.controls['repeatPassword'].errors?.['required']">required </span>
+        <span *ngIf="userForm.get('repeatPassword')?.getError('required')">required </span>
         <span *ngIf="userForm.controls['repeatPassword'].value !== userForm.controls['password'].value">the entered password doesn't match the original password </span>
       </div>
     </div>
@@ -75,7 +75,7 @@
     <ng-template #buttons>
       <div class="form__buttons">
         <button type="button" class="form__delete btn" (click)="onDelete()" [disabled]="userForm.invalid">Delete</button>
-        <button type="button" class="form__submit btn" (click)="onCreate()" [disabled]="userForm.invalid">Save</button>
+        <button type="button" class="form__submit btn" (click)="onSave()" [disabled]="userForm.invalid">Save</button>
       </div>
     </ng-template>
   </fieldset>
