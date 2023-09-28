@@ -44,5 +44,11 @@ export class EditCreateFormComponent implements OnInit, OnChanges{
   public onSubmit(){
   }
 
+  public onCreate(){
+  }
+
+  public onDelete(){
+  }
+
   protected readonly FormState = FormState;
 }

@@ -70,12 +70,12 @@
       </div>
     </div>
 
-    <button type="submit" class="form__submit btn" *ngIf="formState() === FormState.create; else buttons">Create</button>
+    <button type="submit" class="form__submit btn" *ngIf="formState() === FormState.create; else buttons" [disabled]="userForm.invalid">Create</button>
 
     <ng-template #buttons>
       <div class="form__buttons">
-        <button type="button" class="form__delete btn">Delete</button>
-        <button type="button" class="form__submit btn">Save</button>
+        <button type="button" class="form__delete btn" (click)="onDelete()" [disabled]="userForm.invalid">Delete</button>
+        <button type="button" class="form__submit btn" (click)="onCreate()" [disabled]="userForm.invalid">Save</button>
       </div>
     </ng-template>
   </fieldset>
