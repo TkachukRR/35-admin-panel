@@ -1,1 +1,51 @@
-<p>edit-create-form works!</p>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form">
+  <fieldset class="form__fieldset">
+    <legend class="form__title">{{ formState() === FormState.edit ? userName : 'Create new user' }}</legend>
+
+    <div class="form__field field">
+      <label class="field__label" for="username">Username</label>
+      <input class="field__input" type="text" id="username" formControlName="username" required [ngClass]="{'field__input--error': userForm.controls['username'].touched && userForm.controls['username'].errors }">
+    </div>
+
+    <div class="form__field field">
+      <label class="field__label" for="firstName">First Name</label>
+      <input class="field__input" type="text" id="firstName" formControlName="firstName" required [ngClass]="{'field__input--error': userForm.controls['firstName'].touched && userForm.controls['firstName'].errors }">
+    </div>
+
+    <div class="form__field field">
+      <label class="field__label" for="lastName">Last Name</label>
+      <input class="field__input" type="text" id="lastName" formControlName="lastName" required [ngClass]="{'field__input--error': userForm.controls['lastName'].touched && userForm.controls['lastName'].errors }">
+    </div>
+
+    <div class="form__field field">
+      <label class="field__label" for="email">Email</label>
+      <input class="field__input" type="text" id="email" formControlName="email" required [ngClass]="{'field__input--error': userForm.controls['email'].touched && userForm.controls['email'].errors }">
+    </div>
+
+    <div class="form__field field">
+      <label class="field__label" for="type">Type</label>
+      <select class="field__select"  id="type" formControlName="type" required [ngClass]="{'field__select--error': userForm.controls['type'].touched && userForm.controls['type'].errors }">
+        <option *ngFor="let type of userTypes" [value]="type" class="field__option">{{ type }}</option>
+      </select>
+    </div>
+
+    <div class="form__field field">
+      <label class="field__label" for="password">Password</label>
+      <input class="field__input" type="text" id="password" formControlName="password" required [ngClass]="{'field__input--error': userForm.controls['password'].touched && userForm.controls['password'].errors }">
+    </div>
+
+    <div class="form__field field">
+      <label class="field__label" for="repeatPassword">Repeat password</label>
+      <input class="field__input" type="text" id="repeatPassword" formControlName="repeatPassword" required [ngClass]="{'field__input--error': userForm.controls['repeatPassword'].touched && (userForm.controls['repeatPassword'].errors || userForm.controls['repeatPassword'].value !== userForm.controls['password'].value) }">
+    </div>
+
+    <button type="submit" class="form__submit btn" *ngIf="formState() === FormState.create; else buttons">Create</button>
+
+    <ng-template #buttons>
+      <div class="form__buttons">
+        <button type="button" class="form__delete btn">Delete</button>
+        <button type="button" class="form__submit btn">Save</button>
+      </div>
+    </ng-template>
+  </fieldset>
+</form>
