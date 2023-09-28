@@ -25,7 +25,7 @@ export class EditCreateFormComponent implements OnInit, OnChanges{
       email: ['', [Validators.required, Validators.email]],
       type: ['', Validators.required],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]+$/)]],
-      repeatPassword: ['', [Validators.required]],
+      repeatPassword: ['', Validators.required]
     })
   }
 

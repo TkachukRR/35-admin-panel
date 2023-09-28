@@ -54,10 +54,10 @@
       <input class="field__input" type="text" id="password" formControlName="password" required [ngClass]="{'field__input--error': userForm.controls['password'].touched && userForm.controls['password'].errors }">
       <div class="field__error" *ngIf=" userForm.controls['password'].touched && userForm.controls['password'].errors">Error:
         <span *ngIf="userForm.controls['password'].errors?.['required']">required </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']['requiredPattern'].includes('(?=.*[A-Z])')">one uppercase letter </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']['requiredPattern'].includes('(?=.*[a-z])')">one lower letter </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']['requiredPattern'].includes('(?=.*\\d)')">one number </span>
-        <span *ngIf="userForm.controls['password'].errors?.['pattern']['requiredPattern'].includes('(?=.*[@#$!%*?&])')">one symbol @#$!%*?& </span>
+        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*[A-Z])')">one uppercase letter </span>
+        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*[a-z])')">one lower letter </span>
+        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*\\d)')">one number </span>
+        <span *ngIf="userForm.controls['password'].errors?.['pattern']?.['requiredPattern']?.includes('(?=.*[@#$!%*?&])')">one symbol @#$!%*?& </span>
       </div>
     </div>
 
