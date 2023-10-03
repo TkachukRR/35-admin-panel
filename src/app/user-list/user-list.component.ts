@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { UsersService } from "../services/users.service";
+import { User } from "../interfaces/user";
 
 @Component({
   selector: 'app-user-list',
@@ -10,10 +11,10 @@ export class UserListComponent {
   private _userService = inject(UsersService);
 
   public tableHeaders: string[] = ['Username','First name','Last name','Email','Type'];
-  public users = this._userService.users
-  public selectedUser = this._userService.selectedUserName;
+  public users: Signal<User[]> = this._userService.allUsers
+  public selectedUser = this._userService.selectedName;
 
   onSelected(userName: string):void {
-    this._userService.setSelectedUserName(userName);
+    this._userService.selectedName.set(userName)
   }
 }

@@ -7,11 +7,11 @@ import { UsersService } from "../services/users.service";
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent {
-  private _userService = inject(UsersService);
-  public selectedUser = this._userService.selectedUserName;
+  public _userService = inject(UsersService);
+  public selectedUser = this._userService.selectedName;
 
   private editUserFormVisible = signal(!!this.selectedUser())
-  private createUserFormVisible = signal(true) //TODO false
+  private createUserFormVisible = signal(false)
 
   public formVisible = computed( () => this.editUserFormVisible() || this.selectedUser() || this.createUserFormVisible() )
 

@@ -1,10 +1,10 @@
-import { FormUserTypes } from "../enums/form-user-types";
+import { UserType } from "../enums/user-type";
 
 export interface User {
-  "username": string,
-  "first_name": string,
-  "last_name": string,
-  "email": string,
-  "user_type": FormUserTypes,
-  "password": string
+  "nick": string;
+  "firstName": string;
+  "lastName": string;
+  "email": string;
+  "password": string;
+  "type": UserType;
 }
