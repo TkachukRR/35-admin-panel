@@ -2,7 +2,7 @@ import { inject, Injectable, Signal, signal } from '@angular/core';
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { User } from "../interfaces/user";
 import { StorageService } from "./storage.service";
-import { filter, map, Observable, switchMap, tap } from "rxjs";
+import { map, Observable, of, switchMap, tap } from "rxjs";
 import { UserResponse } from "../interfaces/user-response";
 import { Message } from "../interfaces/message";
 import { MessageType } from "../enums/message-type";
@@ -23,6 +23,7 @@ export class UsersService {private _store = inject(StorageService);
           password: user.password,
           type: user.user_type
         }
+
         return userConverted
       }
     ))
@@ -33,20 +34,33 @@ export class UsersService {private _store = inject(StorageService);
   public selectedName = signal<string>('')
   public message = signal<Message>({} as Message)
 
-  private _userSelected$ = toObservable(this.selectedName).pipe(
-    filter(Boolean),
-    tap(() => this.message.set({
-      type: MessageType.success,
-      info:'loading user info'
-    })),
-    switchMap(selectedName=> this._store.getUser(selectedName)),
-    tap(() => {
-      this.message.set({
-        type: MessageType.success,
-        info:'user info loaded'
-      });
-      setTimeout(() => this.message.set({} as Message), 3000)
+  private _userSelected$: Observable<UserResponse> = toObservable(this.selectedName).pipe(
+    tap((selectedName) => {
+      if (selectedName) {
+        this.message.set({
+          type: MessageType.success,
+          info:'loading user info'
+        });
+      }
     }),
+    switchMap(selectedName => {
+      if (!selectedName) {
+        this.message.set({} as Message);
+        return of({} as UserResponse);
+      }
+      return this._store.getUser(selectedName);
+    }),
+    tap( user => {
+      if (!!Object.keys(user).length) {
+        this.message.set({
+          type: MessageType.success,
+          info: 'user info loaded'
+        });
+        setTimeout(() => this.message.set({} as Message), 3000)
+        return
+      }
+      this.message.set({} as Message)
+    })
   )
 
   public userSelected = toSignal(this._userSelected$)
