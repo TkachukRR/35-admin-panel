@@ -37,6 +37,7 @@ export class UsersService {private _store = inject(StorageService);
   private _userSelected$: Observable<UserResponse> = toObservable(this.selectedName).pipe(
     tap((selectedName) => {
       if (selectedName) {
+        this.loadingUserInfo.set(true);
         this.message.set({
           type: MessageType.success,
           info:'loading user info'
@@ -52,6 +53,7 @@ export class UsersService {private _store = inject(StorageService);
     }),
     tap( user => {
       if (!!Object.keys(user).length) {
+        this.loadingUserInfo.set(false);
         this.message.set({
           type: MessageType.success,
           info: 'user info loaded'
@@ -63,5 +65,6 @@ export class UsersService {private _store = inject(StorageService);
     })
   )
 
-  public userSelected = toSignal(this._userSelected$)
+  public userSelected= toSignal<UserResponse, UserResponse>(this._userSelected$, {initialValue: {} as UserResponse})
+  public loadingUserInfo = signal(false)
 }
