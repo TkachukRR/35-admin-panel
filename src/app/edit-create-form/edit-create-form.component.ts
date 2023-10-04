@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnChanges, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FormState } from "../enums/form-state";
-import { FormUserTypes } from "../enums/form-user-types";
+import { UserType } from "../enums/user-type";
 
 @Component({
   selector: 'app-edit-create-form',
@@ -13,7 +13,7 @@ export class EditCreateFormComponent implements OnInit, OnChanges{
 
   @Input() userName = '';
 
-  public userTypes: FormUserTypes[] = [ FormUserTypes.admin, FormUserTypes.driver]
+  public userTypes: UserType[] = [ UserType.Administrator, UserType.Driver]
   public userForm!: FormGroup;
   public formState = signal<FormState>(FormState.create);
 
