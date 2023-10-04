@@ -49,6 +49,10 @@
     border: none;
     background-color: var(--bg-form-input);
 
+    &--blur{
+      filter: blur(2px);
+    }
+
     &--error{
       outline: 1px solid var(--bg-msg-error);
       line-height: var(--height-S);
