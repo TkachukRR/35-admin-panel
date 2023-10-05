@@ -2,10 +2,11 @@ import { inject, Injectable, signal } from '@angular/core';
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { User } from "../interfaces/user";
 import { StorageService } from "./storage.service";
-import { map, Observable, of, pipe, switchMap, tap } from "rxjs";
+import { catchError, map, Observable, of, pipe, switchMap, tap, throwError } from "rxjs";
 import { UserResponse } from "../interfaces/user-response";
 import { Message } from "../interfaces/message";
 import { MessageType } from "../enums/message-type";
+import { logMessages } from "@angular-devkit/build-angular/src/tools/esbuild/utils";
 
 @Injectable({
   providedIn: 'root'
@@ -85,13 +86,23 @@ export class UsersService{
   public updateUser(nick: string, user: User) {
     const userResp = this.convertToUserResponse(user)
     this._store.updateUser(nick, userResp).subscribe(
-      pipe(updatedUser => {
+      updatedUser => {
         const updatedUserIndex = this.allUsers().findIndex(user => user.nick === nick)
         const newUsers = [...this.allUsers()]
 
         newUsers[updatedUserIndex] = this.convertToUser(updatedUser)
         this.allUsers.set(newUsers)
-      })
+      }
     )
   }
+
+  public deleteUser(user: User){
+    const userDel = this.convertToUserResponse(user)
+
+    this._store.deleteUser(userDel.username).subscribe(
+      deletedUser => {
+        const newUsers = this.allUsers().filter(user => user.nick !== deletedUser.username)
+        this.allUsers.set(newUsers)
+      }
+    )}
 }

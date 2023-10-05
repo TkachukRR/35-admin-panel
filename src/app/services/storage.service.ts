@@ -121,12 +121,24 @@ export class StorageService {
     );
   }
 
-  public updateUser(userName: string, updatingUser: UserResponse){
+  public updateUser(userName: string, updatingUser: UserResponse): Observable<UserResponse> {
     const userIndex: number = this._users.findIndex(user => user.username === userName);
-    if (userIndex === -1) throw new Error(`User ${updatingUser.username} not found`)
+    if (userIndex === -1) throw new Error(`User ${userName} not found`)
     this._users[userIndex] = updatingUser
 
     return of(this._users[userIndex]).pipe(
+      delay(1000)
+    );
+  }
+
+  public deleteUser(userName: string): Observable<UserResponse> {
+    const userIndex: number = this._users.findIndex(user => user.username === userName);
+    if (userIndex === -1) throw new Error(`User ${userName} not found`)
+
+    const deletedUser = this._users[userIndex]
+    this._users.splice(userIndex, 1)
+
+    return of(deletedUser).pipe(
       delay(1000)
     );
   }

@@ -59,6 +59,9 @@ export class EditCreateFormComponent{
   }
 
   public onDelete(){
+    this._us.deleteUser(this.userForm.value)
+    this.userForm.reset()
+    this.editFormTitle.set('Edit user')
   }
 
   public onSave() {
