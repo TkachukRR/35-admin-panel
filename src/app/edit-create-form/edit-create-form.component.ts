@@ -4,6 +4,7 @@ import { FormState } from "../enums/form-state";
 import { UserType } from "../enums/user-type";
 import { UsersService } from "../services/users.service";
 import { toObservable } from "@angular/core/rxjs-interop";
+import { User } from "../interfaces/user";
 
 @Component({
   selector: 'app-edit-create-form',
@@ -23,7 +24,7 @@ export class EditCreateFormComponent{
 
   public userTypes: UserType[] = [ UserType.Administrator, UserType.Driver]
   public userForm: FormGroup = this._fb.group({
-    username: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+    nick: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
     firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Zа-яА-Я]+$/)]],
     lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Zа-яА-Я]+$/)]],
     email: ['', [Validators.required, Validators.email]],
@@ -33,17 +34,9 @@ export class EditCreateFormComponent{
   })
 
   selectedUser$ = toObservable((this.userSelected)).subscribe(
-    (user) => {
-      this.editFormTitle.set(`${user.first_name} ${user.last_name}`)
-      this.userForm.patchValue({
-        username: user.username,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        type: user.user_type,
-        password: user.password,
-        repeatPassword: user.password
-      })
+    (user: User) => {
+      this.editFormTitle.set(`${user.firstName} ${user.lastName}`)
+      this.userForm.patchValue({...user, repeatPassword: user.password})
     })
 
   loading$ = toObservable(this.loading).subscribe(
@@ -69,6 +62,7 @@ export class EditCreateFormComponent{
   }
 
   public onSave() {
+    this._us.updateUser(this.selectedName(), this.userForm.value)
   }
 
   protected readonly FormState = FormState;

@@ -120,4 +120,14 @@ export class StorageService {
       delay(1000)
     );
   }
+
+  public updateUser(userName: string, updatingUser: UserResponse){
+    const userIndex: number = this._users.findIndex(user => user.username === userName);
+    if (userIndex === -1) throw new Error(`User ${updatingUser.username} not found`)
+    this._users[userIndex] = updatingUser
+
+    return of(this._users[userIndex]).pipe(
+      delay(1000)
+    );
+  }
 }
