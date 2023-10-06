@@ -43,3 +43,30 @@
     border: none;
   }
 }
+
+.message{
+  position: absolute;
+  top: -73px;
+  left: 0;
+  width: 100%;
+  transform: translateY(-100%);
+
+  &--error,
+  &--success {
+    width: 281px;
+    padding: 22px 26px 21px;
+    border-radius: 6px;
+    color: var(--txt-accent);
+  }
+
+  &--error {
+    float: left;
+    background-color: var(--bg-msg-error);
+    box-shadow: var(--shadow-msg-error);
+  }
+  &--success{
+    float: right;
+    background-color: var(--bg-msg-success);
+    box-shadow: var(--shadow-msg-success);
+  }
+}

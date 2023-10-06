@@ -122,8 +122,12 @@ export class UsersService{
           info: 'User deleted'
         });
         setTimeout(() => this.message.set({} as Message), this._messageExpTime)
-        return
-      }
+      },
+      error => {
+        this.message.set({
+          type: MessageType.error,
+          info: 'User not found'
+        });}
     )}
 
   public createUser(user: User){

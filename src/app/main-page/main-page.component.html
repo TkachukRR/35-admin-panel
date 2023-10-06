@@ -10,5 +10,8 @@
       </button>
       <app-edit-create-form></app-edit-create-form>
     </div>
+    <div class="message" *ngIf="message().info">
+      <div [ngClass]="message().type === MessageType.error ? 'message--error' : 'message--success'">{{ message().info }}</div>
+    </div>
   </div>
 </div>
