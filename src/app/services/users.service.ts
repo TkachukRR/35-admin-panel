@@ -23,7 +23,15 @@ export class UsersService{
 
   private _allUsersSub = this._store.getAll().pipe(
     map((users: UserResponse[]) => users.map( user => this.convertToUser(user))),
-    tap(users => this.allUsers.set(users))
+    tap(users => {
+      this.allUsers.set(users)
+      this.message.set({
+        type: MessageType.success,
+        info: 'All users loaded'
+      });
+      setTimeout(() => this.message.set({} as Message), this._messageExpTime)
+      return
+    })
   ).subscribe()
 
   private _userSelectedSub = toObservable(this.selectedName).pipe(
@@ -49,7 +57,7 @@ export class UsersService{
       return this.convertToUser(user)
     }),
     tap( user => {
-      if (!!Object.keys(user).length) {
+      if (!!user.nick) {
         this.loadingUserInfo.set(false);
         this.message.set({
           type: MessageType.success,
@@ -92,6 +100,12 @@ export class UsersService{
 
         newUsers[updatedUserIndex] = this.convertToUser(updatedUser)
         this.allUsers.set(newUsers)
+        this.message.set({
+          type: MessageType.success,
+          info: 'User info updated'
+        });
+        setTimeout(() => this.message.set({} as Message), this._messageExpTime)
+        return
       })
     )
   }
@@ -103,6 +117,12 @@ export class UsersService{
       deletedUser => {
         const newUsers = this.allUsers().filter(user => user.nick !== deletedUser.username)
         this.allUsers.set(newUsers)
+        this.message.set({
+          type: MessageType.success,
+          info: 'User deleted'
+        });
+        setTimeout(() => this.message.set({} as Message), this._messageExpTime)
+        return
       }
     )}
 
@@ -113,6 +133,12 @@ export class UsersService{
       () => {
         const newUsers = [user, ...this.allUsers()]
         this.allUsers.set(newUsers)
+        this.message.set({
+          type: MessageType.success,
+          info: 'Created new user'
+        });
+        setTimeout(() => this.message.set({} as Message), this._messageExpTime)
+        return
       }
     )
   }
