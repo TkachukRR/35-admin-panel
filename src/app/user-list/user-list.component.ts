@@ -8,10 +8,13 @@ import { User } from "../interfaces/user";
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent {
+  private quantitySkeletonElements = 10
   private _userService = inject(UsersService);
 
+  public skeletonElements = new Array<User>(this.quantitySkeletonElements).fill({} as User)
   public tableHeaders: string[] = ['Username','First name','Last name','Email','Type'];
   public users: Signal<User[]> = this._userService.allUsers
+
   public selectedUser = this._userService.selectedName;
 
   onSelected(userName: string):void {

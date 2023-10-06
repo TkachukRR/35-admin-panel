@@ -15,7 +15,8 @@
   &__body{
     display: block;
     overflow-y: auto;
-    max-height: 576px;
+    max-height: 578px;
+    overflow-x: hidden;
   }
 
   &__row{
@@ -44,11 +45,41 @@
 
   &__item{
     &--head{
-      padding: 24px 0 15px 26px;
+      padding: 24px 5px 15px;
+    }
+
+    &--head:last-child{
+      padding-right: 26px;
+    }
+
+    &--head:first-child{
+      padding-left: 26px;
     }
 
     &--body{
-      padding: 20px 0 20px 26px;
+      padding: 22px 5px 21px;
+      width: 100%;
     }
+
+    &--body:last-child{
+      padding-right: 26px;
+    }
+
+    &--body:first-child{
+      padding-left: 26px;
+    }
+
+    &--text{
+      height: var(--size-S);
+    }
+  }
+}
+
+.skeleton{
+  background: var(--txt-secondary);
+  border-radius: 2px;
+
+  &:after{
+    height: var(--size-S);
   }
 }

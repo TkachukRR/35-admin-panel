@@ -5,16 +5,16 @@
       <th *ngFor="let header of tableHeaders" class="table__item--head">{{ header | uppercase }}</th>
     </tr>
   </thead>
-  <tbody class="table__body scrollbar" *ngIf="users().length">
-    <tr *ngFor="let user of users()"
+  <tbody class="table__body scrollbar">
+    <tr *ngFor="let user of users().length ? users() : skeletonElements"
         class="table__row table__row--body"
         [ngClass]="{ 'table__row--selected': selectedUser() === user.nick }"
         (click)="onSelected(user.nick)">
-      <td class="table__item--body">{{ user.nick }}</td>
-      <td class="table__item--body">{{ user.firstName | titlecase }}</td>
-      <td class="table__item--body">{{ user.lastName | titlecase }}</td>
-      <td class="table__item--body">{{ user.email }}</td>
-      <td class="table__item--body">{{ user.type | titlecase }}</td>
+      <td class="table__item--body"><div class="table__item--text" [ngClass]="{'skeleton': !users().length }">{{ user.nick }}</div></td>
+      <td class="table__item--body"><div class="table__item--text" [ngClass]="{'skeleton': !users().length }">{{ user.firstName | titlecase }}</div></td>
+      <td class="table__item--body"><div class="table__item--text" [ngClass]="{'skeleton': !users().length }">{{ user.lastName | titlecase }}</div></td>
+      <td class="table__item--body"><div class="table__item--text" [ngClass]="{'skeleton': !users().length }">{{ user.email }}</div></td>
+      <td class="table__item--body"><div class="table__item--text" [ngClass]="{'skeleton': !users().length }">{{ user.type | titlecase }}</div></td>
     </tr>
   </tbody>
 </table>
