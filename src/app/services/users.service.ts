@@ -1,23 +1,65 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { toObservable, toSignal } from "@angular/core/rxjs-interop";
+import { toObservable } from "@angular/core/rxjs-interop";
 import { User } from "../interfaces/user";
 import { StorageService } from "./storage.service";
-import { catchError, map, Observable, of, pipe, switchMap, tap, throwError } from "rxjs";
+import { map, of, pipe, switchMap, tap } from "rxjs";
 import { UserResponse } from "../interfaces/user-response";
 import { Message } from "../interfaces/message";
 import { MessageType } from "../enums/message-type";
-import { logMessages } from "@angular-devkit/build-angular/src/tools/esbuild/utils";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService{
   private _store = inject(StorageService);
-  private messageLive = 3000
+  private _messageExpTime = 3000
+
+  public allUsers = signal([] as User[])
+  public selectedName = signal<string>('')
+  public userSelected= signal<User>({} as User)
+
+  public loadingUserInfo = signal(false)
+  public message = signal<Message>({} as Message)
 
   private _allUsersSub = this._store.getAll().pipe(
     map((users: UserResponse[]) => users.map( user => this.convertToUser(user))),
     tap(users => this.allUsers.set(users))
+  ).subscribe()
+
+  private _userSelectedSub = toObservable(this.selectedName).pipe(
+    tap((selectedName) => {
+      if (selectedName) {
+        this.loadingUserInfo.set(true);
+        this.message.set({
+          type: MessageType.success,
+          info:'loading user info'
+        });
+      }
+    }),
+    switchMap(selectedName => {
+      if (!selectedName) {
+        this.message.set({} as Message);
+        return of({} as UserResponse);
+      }
+
+      return this._store.getUser(selectedName);
+    }),
+    map(user => {
+      this.userSelected.set(this.convertToUser(user));
+      return this.convertToUser(user)
+    }),
+    tap( user => {
+      if (!!Object.keys(user).length) {
+        this.loadingUserInfo.set(false);
+        this.message.set({
+          type: MessageType.success,
+          info: 'user info loaded'
+        });
+        setTimeout(() => this.message.set({} as Message), this._messageExpTime)
+        return
+      }
+      this.message.set({} as Message)
+    })
   ).subscribe()
 
   private convertToUser(userResp: UserResponse):User  {
@@ -41,58 +83,16 @@ export class UsersService{
     }
   }
 
-
-  public allUsers = signal([] as User[])
-
-  public selectedName = signal<string>('')
-  public message = signal<Message>({} as Message)
-
-  private _userSelected$: Observable<User> = toObservable(this.selectedName).pipe(
-    tap((selectedName) => {
-      if (selectedName) {
-        this.loadingUserInfo.set(true);
-        this.message.set({
-          type: MessageType.success,
-          info:'loading user info'
-        });
-      }
-    }),
-    switchMap(selectedName => {
-      if (!selectedName) {
-        this.message.set({} as Message);
-        return of({} as UserResponse);
-      }
-
-      return this._store.getUser(selectedName);
-    }),
-    map(user => this.convertToUser(user)),
-    tap( user => {
-      if (!!Object.keys(user).length) {
-        this.loadingUserInfo.set(false);
-        this.message.set({
-          type: MessageType.success,
-          info: 'user info loaded'
-        });
-        setTimeout(() => this.message.set({} as Message), this.messageLive)
-        return
-      }
-      this.message.set({} as Message)
-    })
-  )
-
-  public userSelected= toSignal<User, User>(this._userSelected$, {initialValue: {} as User})
-  public loadingUserInfo = signal(false)
-
   public updateUser(nick: string, user: User) {
     const userResp = this.convertToUserResponse(user)
     this._store.updateUser(nick, userResp).subscribe(
-      updatedUser => {
+      pipe(updatedUser => {
         const updatedUserIndex = this.allUsers().findIndex(user => user.nick === nick)
         const newUsers = [...this.allUsers()]
 
         newUsers[updatedUserIndex] = this.convertToUser(updatedUser)
         this.allUsers.set(newUsers)
-      }
+      })
     )
   }
 
@@ -105,4 +105,15 @@ export class UsersService{
         this.allUsers.set(newUsers)
       }
     )}
+
+  public createUser(user: User){
+    const newUser = this.convertToUserResponse(user)
+
+    this._store.createUser(newUser).subscribe(
+      () => {
+        const newUsers = [user, ...this.allUsers()]
+        this.allUsers.set(newUsers)
+      }
+    )
+  }
 }

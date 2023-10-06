@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FormState } from "../enums/form-state";
 import { UserType } from "../enums/user-type";
 import { UsersService } from "../services/users.service";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { User } from "../interfaces/user";
+import { MainPageComponent } from "../main-page/main-page.component";
 
 @Component({
   selector: 'app-edit-create-form',
@@ -14,13 +15,24 @@ import { User } from "../interfaces/user";
 export class EditCreateFormComponent{
   private _fb = inject(FormBuilder);
   private _us = inject(UsersService)
+  private _mp = inject(MainPageComponent)
 
   private userSelected = this._us.userSelected
   private selectedName = this._us.selectedName
 
-  public formState = signal<FormState>(FormState.create);
+  public formState = signal<FormState | null>(null);
   public loading = this._us.loadingUserInfo
-  public editFormTitle = signal('Edit user')
+  public formTitle = computed( () => {
+      switch (this.formState()) {
+        case FormState.create:
+          return 'Create new user'
+
+        case FormState.edit:
+          return this.loading() ? 'Edit user' : this.userSelected().firstName + ' ' + this.userSelected().lastName
+
+        default: return ''
+      }
+  })
 
   public userTypes: UserType[] = [ UserType.Administrator, UserType.Driver]
   public userForm: FormGroup = this._fb.group({
@@ -35,15 +47,8 @@ export class EditCreateFormComponent{
 
   selectedUser$ = toObservable((this.userSelected)).subscribe(
     (user: User) => {
-      this.editFormTitle.set(`${user.firstName} ${user.lastName}`)
       this.userForm.patchValue({...user, repeatPassword: user.password})
     })
-
-  loading$ = toObservable(this.loading).subscribe(
-    () => {
-      this.editFormTitle.set('Edit user')
-    }
-  )
 
   selectedName$ = toObservable(this.selectedName).subscribe(
     name => {
@@ -53,19 +58,30 @@ export class EditCreateFormComponent{
   )
 
   public onSubmit(){
+    switch (this.formState()){
+      case FormState.create:
+        this.onCreate();
+        break
+
+      case FormState.edit:
+        this.onSave();
+        break
+    }
   }
 
   public onCreate(){
+    this._us.createUser(this.userForm.value)
+    this._mp.onClose()
   }
 
   public onDelete(){
     this._us.deleteUser(this.userForm.value)
-    this.userForm.reset()
-    this.editFormTitle.set('Edit user')
+    this._mp.onClose()
   }
 
   public onSave() {
     this._us.updateUser(this.selectedName(), this.userForm.value)
+    this._mp.onClose()
   }
 
   protected readonly FormState = FormState;

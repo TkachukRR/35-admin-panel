@@ -1,5 +1,6 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UsersService } from "../services/users.service";
+import { User } from "../interfaces/user";
 
 @Component({
   selector: 'app-main-page',
@@ -8,22 +9,20 @@ import { UsersService } from "../services/users.service";
 })
 export class MainPageComponent {
   public _userService = inject(UsersService);
-  public selectedUser = this._userService.selectedName;
+  private selectedUser = this._userService.userSelected
+  public selectedUserName = this._userService.selectedName;
 
-  private editUserFormVisible = signal(!!this.selectedUser())
-  private createUserFormVisible = signal(false)
-
-  public formVisible = computed( () => this.editUserFormVisible() || this.selectedUser() || this.createUserFormVisible() )
+  public formVisible = signal( false )
 
   public onCreateUser() {
-    this.selectedUser.set('')
-    this.editUserFormVisible.set(false)
-    this.createUserFormVisible.set(true)
+    this.selectedUserName.set('')
+    this.selectedUser.set({} as User)
+    this.formVisible.set(true)
   }
 
   public onClose(){
-    this.selectedUser.set('')
-    this.editUserFormVisible.set(false)
-    this.createUserFormVisible.set(false)
+    this.selectedUserName.set('')
+    this.selectedUser.set({} as User)
+    this.formVisible.set(false)
   }
 }

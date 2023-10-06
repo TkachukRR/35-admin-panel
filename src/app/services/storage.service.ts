@@ -142,4 +142,14 @@ export class StorageService {
       delay(1000)
     );
   }
+
+  public createUser(newUser: UserResponse): Observable<UserResponse>{
+    const userIndex: number = this._users.findIndex(user => user.username === newUser.username);
+    if (userIndex !== -1) throw new Error(`User name ${newUser.username} exist`)
+
+    this._users = [newUser, ...this._users]
+    return of(newUser).pipe(
+      delay(1000)
+    );
+  }
 }
