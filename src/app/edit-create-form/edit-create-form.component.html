@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form" (submit)="onSubmit()">
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form" >
   <fieldset class="form__fieldset">
     <legend class="form__title">{{ formTitle() }}</legend>
 
@@ -75,7 +75,7 @@
     <ng-template #buttons>
       <div class="form__buttons">
         <button type="button" class="form__delete btn" (click)="onDelete()" [disabled]="userForm.invalid">Delete</button>
-        <button type="button" class="form__save btn" (click)="onSave()" [disabled]="userForm.invalid">Save</button>
+        <button type="submit" class="form__save btn" [disabled]="userForm.invalid">Save</button>
       </div>
     </ng-template>
   </fieldset>

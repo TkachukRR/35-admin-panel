@@ -142,7 +142,6 @@ export class UsersService{
           info: 'Created new user'
         });
         setTimeout(() => this.message.set({} as Message), this._messageExpTime)
-        return
       }
     )
   }
