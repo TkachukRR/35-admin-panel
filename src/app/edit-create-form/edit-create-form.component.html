@@ -4,7 +4,7 @@
 
     <div class="form__field field">
       <label class="field__label" for="nick">Username</label>
-      <input class="field__input" type="text" id="nick" formControlName="nick" required [ngClass]="{'field__input--error': userForm.controls['nick'].touched && userForm.controls['nick'].errors, 'field__input--blur': loading() }">
+      <input class="field__input" type="text" id="nick" formControlName="nick" *appValidationError="userForm.controls['nick']" required [ngClass]="{'field__input--error': userForm.controls['nick'].touched && userForm.controls['nick'].errors, 'field__input--blur': loading() }">
       <div class="field__error" *ngIf=" userForm.controls['nick'].touched && userForm.controls['nick'].errors">Error:
         <span *ngIf="userForm.get('nick')?.getError('required')">required </span>
         <span *ngIf="userForm.get('nick')?.getError('pattern')">only {{ userForm.get('nick')?.getError('pattern')?.['requiredPattern'].slice(3, -4) }} </span>
