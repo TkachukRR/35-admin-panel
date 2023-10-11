@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { EditCreateFormComponent } from './edit-create-form/edit-create-form.component';
+import { ValidationErrorDirective } from './directives/validation-error.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
     MainPageComponent,
-    EditCreateFormComponent
+    EditCreateFormComponent,
+    ValidationErrorDirective
   ],
   imports: [
     BrowserModule,
