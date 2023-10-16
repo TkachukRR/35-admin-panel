@@ -9,39 +9,24 @@
 
     <div class="form__field field">
       <label class="field__label" for="firstName">First Name</label>
-      <input class="field__input" type="text" id="firstName" formControlName="firstName" required [ngClass]="{'field__input--error': userForm.controls['firstName'].touched && userForm.controls['firstName'].errors, 'field__input--blur': loading() }">
-      <div class="field__error" *ngIf=" userForm.controls['firstName'].touched && userForm.controls['firstName'].errors">Error:
-        <span *ngIf="userForm.get('firstName')?.getError('required')">required </span>
-        <span *ngIf="userForm.get('firstName')?.getError('pattern')">only {{ userForm.get('firstName')?.getError('pattern')?.['requiredPattern'].slice(3, -4) }} </span>
-      </div>
+      <input class="field__input" type="text" id="firstName" formControlName="firstName" appValidationError required [ngClass]="{'field__input--blur': loading() }">
     </div>
 
     <div class="form__field field">
       <label class="field__label" for="lastName">Last Name</label>
-      <input class="field__input" type="text" id="lastName" formControlName="lastName" required [ngClass]="{'field__input--error': userForm.controls['lastName'].touched && userForm.controls['lastName'].errors, 'field__input--blur': loading() }">
-      <div class="field__error" *ngIf=" userForm.controls['lastName'].touched && userForm.controls['lastName'].errors">Error:
-        <span *ngIf="userForm.get('lastName')?.getError('required')">required </span>
-        <span *ngIf="userForm.get('lastName')?.getError('pattern')">only {{ userForm.get('lastName')?.getError('pattern')?.['requiredPattern'].slice(3, -4) }} </span>
-      </div>
+      <input class="field__input" type="text" id="lastName" formControlName="lastName" appValidationError required [ngClass]="{'field__input--blur': loading() }">
     </div>
 
     <div class="form__field field">
       <label class="field__label" for="email">Email</label>
-      <input class="field__input" type="text" id="email" formControlName="email" required [ngClass]="{'field__input--error': userForm.controls['email'].touched && userForm.controls['email'].errors, 'field__input--blur': loading() }">
-      <div class="field__error" *ngIf=" userForm.controls['email'].touched && userForm.controls['email'].errors">Error:
-        <span *ngIf="userForm.get('email')?.getError('required')">required </span>
-        <span *ngIf="userForm.get('email')?.getError('email')">isn't e-mail </span>
-      </div>
+      <input class="field__input" type="text" id="email" formControlName="email" appValidationError required [ngClass]="{'field__input--blur': loading() }">
     </div>
 
     <div class="form__field field">
       <label class="field__label" for="type">Type</label>
-      <select class="field__select"  id="type" formControlName="type" required [ngClass]="{'field__select--error': userForm.controls['type'].touched && userForm.controls['type'].errors, 'field__select--blur': loading() }">
+      <select class="field__select"  id="type" formControlName="type" appValidationError required [ngClass]="{'field__select--blur': loading() }">
         <option *ngFor="let type of userTypes" [value]="type" class="field__option">{{ type }}</option>
       </select>
-      <div class="field__error" *ngIf=" userForm.controls['type'].touched && userForm.controls['type'].errors">Error:
-        <span *ngIf="userForm.get('type')?.getError('required')">required </span>
-      </div>
     </div>
 
     <div class="form__field field">
