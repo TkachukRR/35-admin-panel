@@ -31,14 +31,7 @@
 
     <div class="form__field field">
       <label class="field__label" for="password">Password</label>
-      <input class="field__input" type="text" id="password" formControlName="password" required [ngClass]="{'field__input--error': userForm.controls['password'].touched && userForm.controls['password'].errors, 'field__input--blur': loading() }">
-      <div class="field__error" *ngIf=" userForm.controls['password'].touched && userForm.controls['password'].errors">Error:
-        <span *ngIf="userForm.get('password')?.getError('required')">required </span>
-        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*[A-Z])')">one uppercase letter </span>
-        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*[a-z])')">one lower letter </span>
-        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*\\d)')">one number </span>
-        <span *ngIf="userForm.get('password')?.getError('pattern')?.['requiredPattern']?.includes('(?=.*[@#$!%*?&])')">one symbol @#$!%*?& </span>
-      </div>
+      <input class="field__input" type="text" id="password" formControlName="password" appValidationError required [ngClass]="{'field__input--blur': loading() }">
     </div>
 
     <div class="form__field field">
