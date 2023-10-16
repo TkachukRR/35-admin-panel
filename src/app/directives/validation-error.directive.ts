@@ -49,8 +49,9 @@ export class ValidationErrorDirective implements OnDestroy{
         if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*[a-z])') && !(/(?=.*[a-z])/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one lowercase'
         if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*\\d)') && !(/(?=.*\d)/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one number'
         if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*[@#$!%*?&])') && !(/(?=.*[@#$!%*?&])/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one symbol'
-        if (this.control.errors[errorKey]['requiredPattern'].includes('[a-zA-Z0-9]') && !(/^[a-zA-Z0-9]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only letters and numbers'
-        if (this.control.errors[errorKey]['requiredPattern'].includes('[a-zA-Zа-яА-Я]') && !(/^[a-zA-Zа-яА-Я]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only letters'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('[a-zA-Z0-9]') && !(/^[a-zA-Z0-9]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only Latin letters and numbers'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('[a-zA-Zа-яА-Я]') && !(/^[a-zA-Zа-яА-Я]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only Cyrillic and Latin letters'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('[A-Za-z\\d@#$!%*?&]') && !(/^[A-Za-z\d@#$!%*?&]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only Latin letters, numbers and symbols @#$!%*?&'
         break;
       case 'minlength':
       this.inputErrors[errorKey] = `minlength ${this.control.errors['minlength']['requiredLength']}`;
