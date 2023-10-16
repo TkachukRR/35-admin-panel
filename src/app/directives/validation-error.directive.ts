@@ -44,7 +44,13 @@ export class ValidationErrorDirective implements OnDestroy{
       this.inputErrors[errorKey] = `required field`;
         break;
       case 'pattern':
-      this.inputErrors[errorKey] = `only ${this.control.errors[errorKey]['requiredPattern'].slice(3, -4)}`;
+        this.inputErrors[errorKey] = `only ${this.control.errors[errorKey]['requiredPattern'].slice(3, -4)}`
+        if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*[A-Z])') && !(/(?=.*[A-Z])/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one uppercase'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*[a-z])') && !(/(?=.*[a-z])/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one lowercase'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*\\d)') && !(/(?=.*\d)/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one number'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('(?=.*[@#$!%*?&])') && !(/(?=.*[@#$!%*?&])/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'one symbol'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('[a-zA-Z0-9]') && !(/^[a-zA-Z0-9]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only letters and numbers'
+        if (this.control.errors[errorKey]['requiredPattern'].includes('[a-zA-Zа-яА-Я]') && !(/^[a-zA-Zа-яА-Я]+$/).test(this.control.errors[errorKey]['actualValue'])) this.inputErrors[errorKey] = 'only letters'
         break;
       case 'minlength':
       this.inputErrors[errorKey] = `minlength ${this.control.errors['minlength']['requiredLength']}`;
