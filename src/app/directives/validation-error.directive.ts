@@ -16,70 +16,39 @@ export class ValidationErrorDirective implements OnDestroy{
 
   private inputErrors: any = {};
   private errorMessage = '';
-  private errorMsgDiv!: HTMLDivElement | null;
+  private errorMsgDiv: HTMLDivElement | null = null;
 
   @HostListener('focus') onFocus(){
-    this.inputEl.style.outlineColor = "1px solid var(--txt-primary)"
-
+    this.inputEl.style.outline = "1px solid var(--txt-primary)";
     this.sub = this.control.statusChanges?.subscribe(
-      () => {
-        if (!this.control.errors) {
-          this.inputErrors = {}
-          this.errorMessage = ''
-          if (this.errorMsgDiv) {
-            this.parentWrapperDivEl.removeChild(this.errorMsgDiv)
-            this.errorMsgDiv = null
-          }
-          return
-        }
-
-        Object.keys(this.control.errors).map( errorKey => {
-          this.deleteUnExistingErrors()
-          this.updateErrors(errorKey)
-          this.setErrorMessage()
-          if (!this.errorMsgDiv) {
-            this.prepareErrorDiv()
-            if (this.errorMsgDiv) this.parentWrapperDivEl.append(this.errorMsgDiv)
-          } else {
-            this.errorMsgDiv.textContent = this.errorMessage
-          }
-        })
-      }
-    )
+      () => this.handleValidation()
+    );
   }
 
   @HostListener('blur') onBlur(){
-    if (!this.control.errors) return
+    if (!this.control.errors) {
+      this.inputEl.style.outline = 'none';
+      return
+    }
 
     this.inputEl.style.outline = '1px solid var(--bg-msg-error)';
-
-    Object.keys(this.control.errors).map( errorKey => {
-      this.deleteUnExistingErrors()
-      this.updateErrors(errorKey)
-      this.setErrorMessage()
-      if (!this.errorMsgDiv) {
-        this.prepareErrorDiv()
-        if (this.errorMsgDiv) this.parentWrapperDivEl.append(this.errorMsgDiv)
-      } else {
-        this.errorMsgDiv.textContent = this.errorMessage
-      }
-    })
-    this.sub?.unsubscribe()
+    this.handleValidation();
+    this.sub?.unsubscribe();
   }
 
-  private deleteUnExistingErrors(){
-    Object.keys(this.inputErrors).filter(key => !this.control.errors?.[key]).map(key => delete this.inputErrors[key])
-  }
+  private updateInputErrors(errorKey: string){
+    if (!this.control.errors) return
 
-  private updateErrors(errorKey: string){
-    if (this.control.errors && errorKey === 'required') {
-      this.inputErrors[errorKey] = `required field`
-    }
-    if (this.control.errors && errorKey === 'pattern') {
-      this.inputErrors[errorKey] = `only ${this.control.errors[errorKey]['requiredPattern'].slice(3, -4)}`
-    }
-    if (this.control.errors && errorKey === 'minlength') {
-      this.inputErrors[errorKey] = `minlength ${this.control.errors['minlength']['requiredLength']}`
+    switch (errorKey) {
+      case 'required':
+      this.inputErrors[errorKey] = `required field`;
+        break;
+      case 'pattern':
+      this.inputErrors[errorKey] = `only ${this.control.errors[errorKey]['requiredPattern'].slice(3, -4)}`;
+        break;
+      case 'minlength':
+      this.inputErrors[errorKey] = `minlength ${this.control.errors['minlength']['requiredLength']}`;
+        break;
     }
   }
 
@@ -88,10 +57,33 @@ export class ValidationErrorDirective implements OnDestroy{
     this.errorMessage ='Error: ' + errorKeys.map(error => this.inputErrors[error]).join(', ')
   }
 
-  private prepareErrorDiv(){
+  private createErrorMsgDiv(){
     this.errorMsgDiv = document.createElement('div');
     this.errorMsgDiv.style.color = 'var(--bg-msg-error)';
-    this.errorMsgDiv.textContent = this.errorMessage
+    this.errorMsgDiv.textContent = this.errorMessage;
+    this.parentWrapperDivEl.append(this.errorMsgDiv)
+  }
+
+  private handleValidation(){
+    this.resetErrorsState()
+    if (!this.control.errors) return
+
+    Object.keys(this.control.errors).map( errorKey => this.updateInputErrors(errorKey))
+    this.setErrorMessage()
+    this.inspectErrorMsgDiv()
+  }
+
+  private resetErrorsState(){
+    this.inputErrors = {}
+    this.errorMessage = ''
+    if (this.errorMsgDiv) {
+      this.parentWrapperDivEl.removeChild(this.errorMsgDiv)
+      this.errorMsgDiv = null
+    }
+  }
+
+  private inspectErrorMsgDiv(){
+    !this.errorMsgDiv ? this.createErrorMsgDiv() : this.errorMsgDiv.textContent = this.errorMessage
   }
 
   public ngOnDestroy(): void {
