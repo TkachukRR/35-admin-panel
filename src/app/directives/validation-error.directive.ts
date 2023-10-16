@@ -49,6 +49,9 @@ export class ValidationErrorDirective implements OnDestroy{
       case 'minlength':
       this.inputErrors[errorKey] = `minlength ${this.control.errors['minlength']['requiredLength']}`;
         break;
+      case 'email':
+        this.inputErrors[errorKey] = `isn't e-mail`;
+        break;
     }
   }
 
